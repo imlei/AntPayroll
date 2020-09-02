@@ -19,6 +19,7 @@ var (
 	cppamt      float64
 	eiamt       float64
 	cecamt      float64
+	icamt       float64
 )
 
 func main() {
@@ -92,13 +93,15 @@ func main() {
 	//less the federl personal amount T3 = (R × A) – K – K1 – K2 – K3 – K4
 
 	if grossamount > incomeclass["fbpa"] {
-		taxamount = (taxamount-incomeclass["fbpac"]-cecamt)/payfre - cppamt*0.15 - eiamt*0.15
+		icamt = (taxamount - incomeclass["fbpac"] - cecamt - payfre*cppamt*0.15 - payfre*eiamt*0.15) / payfre
 	} else {
-		taxamount = 0
+		icamt = 0
 	}
 
 	fmt.Println("your gross amount:", grossamount)
 	fmt.Println("Income tax payable:", taxamount)
+	fmt.Println("Income tax payable:", icamt)
 	fmt.Println("CPP tax payable:", cppamt)
 	fmt.Println("EI tax payable:", eiamt)
+	fmt.Println("EI tax payable:", cecamt)
 }
