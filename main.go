@@ -79,7 +79,16 @@ func main() {
 		taxamount = (grossamount-incomeclass["level4"])*incomeclass["rate5"] + fixamt4
 	}
 	//calculate the CPP and EI amount, need to update for max amount.
-	cppamt = grossamount * incomeclass["kcpp"] / payfre
+	
+	if grossamount <= 3500 {
+		cppamt = 0 
+	} else {
+		if grossamount < 58700 {
+			cppamt = (grossamount-3500) * incomeclass["kcpp"] 
+		} else {
+			cppamt = 2898
+		}
+	}
 	eiamt = grossamount * incomeclass["kei"] / payfre
 	//less the federl personal amount
 	if grossamount > incomeclass["fbpa"] {
