@@ -18,6 +18,7 @@ var (
 	fixamt4     float64
 	cppamt      float64
 	eiamt       float64
+	cecamt      float64
 )
 
 func main() {
@@ -81,9 +82,17 @@ func main() {
 	//calculate the CPP and EI amount, need to update for max amount.
 	cppamt = grossamount * incomeclass["kcpp"] / payfre
 	eiamt = grossamount * incomeclass["kei"] / payfre
-	//less the federl personal amount
+	// K4= The lesser of: (i)   0.15 × A; and (ii)  0.15 × $1,161.
+	if grossamount > 1245 {
+		cecamt = 1245 * 0.15
+	} else {
+		cecamt = grossamount * 0.15
+	}
+
+	//less the federl personal amount T3 = (R × A) – K – K1 – K2 – K3 – K4
+
 	if grossamount > incomeclass["fbpa"] {
-		taxamount = (taxamount-incomeclass["fbpac"])/payfre - cppamt*0.15 - eiamt*0.15
+		taxamount = (taxamount-incomeclass["fbpac"]-cecamt)/payfre - cppamt*0.15 - eiamt*0.15
 	} else {
 		taxamount = 0
 	}
